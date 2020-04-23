@@ -7,10 +7,12 @@
 </ul>
 
 Conține:
+
 <ul>
 <li>Leaflet.js</li>
+<li>reactstrap</li>
+<li>bootstrap</li>
 </ul>
-
 
 <h1>Parcurs:</h1>
 
@@ -21,4 +23,3 @@ Conține:
 <li>show pin at user location</li>
 
 </ul>
-
