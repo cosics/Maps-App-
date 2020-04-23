@@ -6,9 +6,11 @@
 
 </ul>
 
-Conține:
+Libs:
 <ul>
 <li>Leaflet.js</li>
+  <li>bootstrap</li>
+  <li>reactstrap</li>
 </ul>
 
 
@@ -19,6 +21,7 @@ Conține:
 <li>generate map w/ Leaflet </li>
 <li>get user's location with the browser </li>
 <li>show pin at user location</li>
+<li>get location with user IP - json API (if user doesn't give permission in browser)</li>
 
 </ul>
 
