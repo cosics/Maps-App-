@@ -6,12 +6,20 @@
 
 </ul>
 
+<<<<<<< HEAD
 Conține:
 
 <ul>
 <li>Leaflet.js</li>
 <li>reactstrap</li>
 <li>bootstrap</li>
+=======
+Libs:
+<ul>
+<li>Leaflet.js</li>
+  <li>bootstrap</li>
+  <li>reactstrap</li>
+>>>>>>> e15f1501e1ae55056153baf7b95c7e449c7103cf
 </ul>
 
 <h1>Parcurs:</h1>
@@ -21,5 +29,6 @@ Conține:
 <li>generate map w/ Leaflet </li>
 <li>get user's location with the browser </li>
 <li>show pin at user location</li>
+<li>get location with user IP - json API (if user doesn't give permission in browser)</li>
 
 </ul>
