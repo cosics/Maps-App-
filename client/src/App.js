@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
+import { Card, Button, CardTitle, CardText } from "reactstrap";
 
 import "./App.css";
 
@@ -58,22 +59,30 @@ class App extends Component {
   render() {
     const position = [this.state.location.lat, this.state.location.lng];
     return (
-      <Map className="map" center={position} zoom={this.state.zoom}>
-        <TileLayer
-          attribution='&amp;copy <a href=""http://osm.org/copyright"">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+      <div>
+        <Map className="map" center={position} zoom={this.state.zoom}>
+          <TileLayer
+            attribution='&amp;copy <a href=""http://osm.org/copyright"">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
 
-        {this.state.haveUsersLocation ? (
-          <Marker position={position} icon={myIcon}>
-            <Popup>
-              iconAnchor update. <br /> The tip of the marker icon. <br /> Nice.
-            </Popup>
-          </Marker>
-        ) : (
-          ""
-        )}
-      </Map>
+          {this.state.haveUsersLocation ? (
+            <Marker position={position} icon={myIcon}>
+              <Popup>
+                iconAnchor update. <br /> The tip of the marker icon. <br />{" "}
+                Nice.
+              </Popup>
+            </Marker>
+          ) : (
+            ""
+          )}
+        </Map>
+        <Card body className="message-form">
+          <CardTitle>Submit your message from where u are!</CardTitle>
+          <CardText>Ceva middle text</CardText>
+          <Button>SUbmit message</Button>
+        </Card>
+      </div>
     );
   }
 }
