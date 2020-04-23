@@ -12,13 +12,14 @@ Conține:
 </ul>
 
 
---------------------parcurs:
+<h1>Parcurs:</h1>
 
 <ul>
-<li>-create-react-app </li>
-<li>-generate map w/ Leaflet </li>
-<li>-get user's location with the browser </li>
-<li>-show pin at user location</li>
+<li>create-react-app </li>
+<li>generate map w/ Leaflet </li>
+<li>get user's location with the browser </li>
+  <li> !(https://github.com/cosics/Maps-App-/blob/master/geolocation.PNG)</li>
+<li>show pin at user location</li>
 
 </ul>
 
