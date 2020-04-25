@@ -1,7 +1,16 @@
 import React, { Component } from "react";
 import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
-import { Card, Button, CardTitle, CardText } from "reactstrap";
+import {
+  Card,
+  Button,
+  CardTitle,
+  CardText,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+} from "reactstrap";
 
 import "./App.css";
 
@@ -21,6 +30,10 @@ class App extends Component {
     },
     haveUsersLocation: false,
     zoom: 2,
+    userMessage: {
+      name: "",
+      message: "",
+    },
   };
 
   componentDidMount() {
@@ -56,6 +69,21 @@ class App extends Component {
     );
   }
 
+  formSubmitted = (event) => {
+    event.preventDefault(); //page doesnt refresh
+    console.log(this.state.userMessage);
+  };
+
+  valueChanged = (event) => {
+    const { name, value } = event.target;
+    this.setState((prevState) => ({
+      userMessage: {
+        ...prevState.userMessage,
+        [name]: value,
+      },
+    }));
+  };
+
   render() {
     const position = [this.state.location.lat, this.state.location.lng];
     return (
@@ -78,9 +106,37 @@ class App extends Component {
           )}
         </Map>
         <Card body className="message-form">
-          <CardTitle>Submit your message from where u are!</CardTitle>
-          <CardText>Ceva middle text</CardText>
-          <Button>SUbmit message</Button>
+          <CardTitle>Welcome to whatever this is!</CardTitle>
+          <CardText>Lasă un mesaj</CardText>
+          <Form onSubmit={this.formSubmitted}>
+            <FormGroup>
+              <Label for="name">Nume:</Label>
+              <Input
+                onChange={this.valueChanged}
+                type="text"
+                name="name"
+                id="name"
+                placeholder="Cine"
+              ></Input>
+            </FormGroup>
+            <FormGroup>
+              <Label for="message">Mesaj:</Label>
+              <Input
+                onChange={this.valueChanged}
+                type="textarea"
+                name="message"
+                id="message"
+                placeholder="Hai spune ceva"
+              ></Input>
+            </FormGroup>
+            <Button
+              type="submit"
+              color="info"
+              disabled={!this.state.haveUsersLocation}
+            >
+              Trimite
+            </Button>
+          </Form>
         </Card>
       </div>
     );
