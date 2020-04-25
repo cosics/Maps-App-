@@ -6,23 +6,8 @@
 
 </ul>
 
-<<<<<<< HEAD
-Conține:
-
-<ul>
-<li>Leaflet.js</li>
-<li>reactstrap</li>
-<li>bootstrap</li>
-=======
 Libs:
-<ul>
-<li>Leaflet.js</li>
-  <li>bootstrap</li>
-  <li>reactstrap</li>
->>>>>>> e15f1501e1ae55056153baf7b95c7e449c7103cf
-</ul>
-
-<h1>Parcurs:</h1>
+qAaQ1
 
 <ul>
 <li>create-react-app </li>
