@@ -12,8 +12,8 @@ import {
   Label,
   Input,
 } from "reactstrap";
-import userLocationURL from './user_location.svg'
-import messageLocationURL from './message_location.svg'
+import userLocationURL from "./user_location.svg";
+import messageLocationURL from "./message_location.svg";
 
 import "./App.css";
 
@@ -53,19 +53,32 @@ class App extends Component {
       name: "",
       message: "",
     },
-    sendingMessage = false,
+    sendingMessage: false,
     sentMessage: false,
-    messages: []
+    messages: [],
   };
 
   componentDidMount() {
     fetch(API_URL)
-    .then(res => res.json())
-    .then(messages => {
-      this.setState({
-        messages
-      })
-    })
+      .then((res) => res.json())
+      .then((messages) => {
+        const haveSeenLocation = {};
+        messages = messages.reduce((all, message) => {
+          const key = `${message.latitude}${message.longitude}`;
+          if (haveSeenLocation[key]) {
+            haveSeenLocation[key].otherMessages =
+              haveSeenLocation[key].otherMessages || [];
+            haveSeenLocation[key].otherMessages.push(message);
+          } else {
+            haveSeenLocation[key] = message;
+            all.push(message);
+          }
+          return all;
+        }, []);
+        this.setState({
+          messages,
+        });
+      });
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -113,7 +126,7 @@ class App extends Component {
     event.preventDefault(); //page doesnt refresh
     if (this.formIsValid()) {
       this.setState({
-        sendingMessage = true 
+        sendingMessage: true,
       });
       fetch(API_URL, {
         method: "POST",
@@ -132,11 +145,11 @@ class App extends Component {
         .then((message) => {
           console.log(message);
           setTimeout(() => {
-          this.setState({
-            sendingMessage: false,
-            sentMessage: true
-          })
-        }, 4000)
+            this.setState({
+              sendingMessage: false,
+              sentMessage: true,
+            });
+          }, 4000);
         })
         .catch((error) => {
           console.log(error);
@@ -165,57 +178,74 @@ class App extends Component {
           />
 
           {this.state.haveUsersLocation ? (
-            <Marker position={position} icon={myIcon}>
-              
-            </Marker>
+            <Marker position={position} icon={myIcon}></Marker>
           ) : (
             ""
           )}
-          {this.state.messages.map(message => (
-            <Marker 
-            key={message._id}
-            position={[message.latitude, message.longitude]} icon={messageIcon}>
-            <Popup>
-              <em>{message.name}:</em>{message.message}
-            </Popup>
-          </Marker>
+          {this.state.messages.map((message) => (
+            <Marker
+              key={message._id}
+              position={[message.latitude, message.longitude]}
+              icon={messageIcon}
+            >
+              <Popup>
+                <p>
+                  <em>{message.name}:</em>
+                  {message.message}
+                </p>
+                {message.otherMessages
+                  ? message.otherMessages.map((message) => (
+                      <p key={message._id}>
+                        <em>{message.name}:</em>
+                        {message.message}
+                      </p>
+                    ))
+                  : ""}
+              </Popup>
+            </Marker>
           ))}
         </Map>
         <Card body className="message-form">
           <CardTitle>Welcome to whatever this is!</CardTitle>
           <CardText>Lasă un mesaj</CardText>
-{ !this.state.sendingMessage && !this.state.sentMessage && this.state.haveUsersLocation ?  
-
-          <Form onSubmit={this.formSubmitted}>
-            <FormGroup>
-              <Label for="name">Nume:</Label>
-              <Input
-                onChange={this.valueChanged}
-                type="text"
-                name="name"
-                id="name"
-                placeholder="Cine"
-              ></Input>
-            </FormGroup>
-            <FormGroup>
-              <Label for="message">Mesaj:</Label>
-              <Input
-                onChange={this.valueChanged}
-                type="textarea"
-                name="message"
-                id="message"
-                placeholder="Hai spune ceva"
-              ></Input>
-            </FormGroup>
-            <Button type="submit" color="info" disabled={!this.formIsValid()}>
-              Trimite
-            </Button>
-          </Form> : 
-          this.state.sendingMessage || !this.state.haveUsersLocation ?
-          <video autoPlay loop src="https://i.giphy.com/media/3oEjHTSuJrMnj08DpS/giphy.mp4"></video> :
-          <CardText>Thanks for your contribution!</CardText>
-
-          }
+          {!this.state.sendingMessage &&
+          !this.state.sentMessage &&
+          this.state.haveUsersLocation ? (
+            <Form onSubmit={this.formSubmitted}>
+              <FormGroup>
+                <Label for="name">Nume:</Label>
+                <Input
+                  onChange={this.valueChanged}
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Cine"
+                ></Input>
+              </FormGroup>
+              <FormGroup>
+                <Label for="message">Mesaj:</Label>
+                <Input
+                  onChange={this.valueChanged}
+                  type="textarea"
+                  name="message"
+                  id="message"
+                  placeholder="Hai spune ceva"
+                ></Input>
+              </FormGroup>
+              <Button type="submit" color="info" disabled={!this.formIsValid()}>
+                Trimite
+              </Button>
+            </Form>
+          ) : this.state.sendingMessage || !this.state.haveUsersLocation ? (
+            <video
+              autoPlay
+              loop
+              className="videoInsert"
+              src="https://i.giphy.com/media/3oEjHTSuJrMnj08DpS/giphy.mp4"
+            ></video>
+          ) : (
+            <CardText>Thanks for your contribution!</CardText>
+          )}
         </Card>
       </div>
     );
