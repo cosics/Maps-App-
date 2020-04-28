@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Map, TileLayer, Marker, Popup } from "react-leaflet";
+import Joi from "joi";
 import L from "leaflet";
+import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 import {
   Card,
   Button,
@@ -22,6 +23,16 @@ var myIcon = L.icon({
   popupAnchor: [0, -41],
 });
 
+const schema = Joi.object().keys({
+  name: Joi.string().min(1).max(100).required(),
+  message: Joi.string().min(1).max(500).required(),
+});
+
+const API_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5000/api/v1/messages"
+    : "production-url-here";
+
 class App extends Component {
   state = {
     location: {
@@ -34,9 +45,20 @@ class App extends Component {
       name: "",
       message: "",
     },
+    sendingMessage = false,
+    sentMessage: false,
+    messages: []
   };
 
   componentDidMount() {
+    fetch(API_URL)
+    .then(res => res.json())
+    .then(messages => {
+      this.setState({
+        messages
+      })
+    })
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         //do_something(position.coords.latitude, position.coords.longitude);
@@ -69,9 +91,49 @@ class App extends Component {
     );
   }
 
+  formIsValid = () => {
+    const userMessage = {
+      name: this.state.userMessage.name,
+      message: this.state.userMessage.message,
+    };
+    const result = Joi.validate(userMessage, schema);
+
+    return !result.error && this.state.haveUsersLocation ? true : false;
+  };
+
   formSubmitted = (event) => {
     event.preventDefault(); //page doesnt refresh
-    console.log(this.state.userMessage);
+    if (this.formIsValid()) {
+      this.setState({
+        sendingMessage = true 
+      });
+      fetch(API_URL, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          name: this.state.userMessage.name,
+          message: this.state.userMessage.message,
+          latitude: this.state.location.lat,
+          longitude: this.state.location.lng,
+        }),
+      })
+        .then((res) => res.json())
+        .then((message) => {
+          console.log(message);
+          setTimeout(() => {
+          this.setState({
+            sendingMessage: false,
+            sentMessage: true
+          })
+        }, 4000)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   valueChanged = (event) => {
@@ -96,18 +158,24 @@ class App extends Component {
 
           {this.state.haveUsersLocation ? (
             <Marker position={position} icon={myIcon}>
-              <Popup>
-                iconAnchor update. <br /> The tip of the marker icon. <br />{" "}
-                Nice.
-              </Popup>
+              
             </Marker>
           ) : (
             ""
           )}
+          {this.state.messages.map(message => (
+            <Marker position={[message.latitude, message.longitude]} icon={myIcon}>
+            <Popup>
+              <em>{message.name}:</em>{message.message}
+            </Popup>
+          </Marker>
+          ))}
         </Map>
         <Card body className="message-form">
           <CardTitle>Welcome to whatever this is!</CardTitle>
           <CardText>Lasă un mesaj</CardText>
+{ !this.state.sendingMessage && !this.state.sentMessage && this.state.haveUsersLocation ?  
+
           <Form onSubmit={this.formSubmitted}>
             <FormGroup>
               <Label for="name">Nume:</Label>
@@ -129,14 +197,15 @@ class App extends Component {
                 placeholder="Hai spune ceva"
               ></Input>
             </FormGroup>
-            <Button
-              type="submit"
-              color="info"
-              disabled={!this.state.haveUsersLocation}
-            >
+            <Button type="submit" color="info" disabled={!this.formIsValid()}>
               Trimite
             </Button>
-          </Form>
+          </Form> : 
+          this.state.sendingMessage || !this.state.haveUsersLocation ?
+          <video autoPlay loop src="https://i.giphy.com/media/3oEjHTSuJrMnj08DpS/giphy.mp4"></video> :
+          <CardText>Thanks for your contribution!</CardText>
+
+          }
         </Card>
       </div>
     );
