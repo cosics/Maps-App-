@@ -9,17 +9,33 @@ body {
 }
 
 .map {
-  height: 500px;
+  height: 100%;
+}
+
+video {
+  width: 100%;
 }
 
 .message-form {
   z-index: 999;
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 5px;
+  right: 5px;
+  max-width: 300px;
 }
 
-.videoInsert {
-  width: 120px;
-  height: auto;
+.thanks-form {
+  z-index: 999;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  max-width: 220px;
+}
+
+.footer {
+  z-index: 999;
+  position: absolute;
+  bottom: 35px;
+  left: 5px;
+  padding: 5px;
 }
