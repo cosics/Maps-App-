@@ -19,27 +19,54 @@ describe("GET /api/v1", () => {
 });
 
 describe("POST /api/v1/messages", () => {
-  it("responds with inserted msg", (done) => {
+  it("responds with inserted message", (done) => {
     const requestObj = {
-      name: "Cezara",
-      message: "cea mai aplicatzie",
+      name: "CJ",
+      message: "This app is so cool!",
       latitude: -90,
       longitude: 180,
     };
 
     const responseObj = {
       ...requestObj,
-      _id: "5ea5aa2c72102a51b0e1c6f6",
-      date: "2020-04-26T15:35:08.161Z",
+      _id: "5b57d127923211248855977c",
+      date: "2018-07-25T01:23:51.029Z",
     };
+
     request(app)
       .post("/api/v1/messages")
       .send(requestObj)
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect((res) => {
-        res.body._id = "5ea5aa2c72102a51b0e1c6f6";
-        res.body.date = "2020-04-26T15:35:08.161Z";
+        res.body._id = "5b57d127923211248855977c";
+        res.body.date = "2018-07-25T01:23:51.029Z";
+      })
+      .expect(200, responseObj, done);
+  });
+
+  it("can signup with a name that has diacritics", (done) => {
+    const requestObj = {
+      name: "Ÿööhöö",
+      message: "This app is so cool!",
+      latitude: -90,
+      longitude: 180,
+    };
+
+    const responseObj = {
+      ...requestObj,
+      _id: "5b57d127923211248855977c",
+      date: "2018-07-25T01:23:51.029Z",
+    };
+
+    request(app)
+      .post("/api/v1/messages")
+      .send(requestObj)
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .expect((res) => {
+        res.body._id = "5b57d127923211248855977c";
+        res.body.date = "2018-07-25T01:23:51.029Z";
       })
       .expect(200, responseObj, done);
   });

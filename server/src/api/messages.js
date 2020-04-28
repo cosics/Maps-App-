@@ -5,7 +5,7 @@ const db = require("../db");
 const messages = db.get("messages");
 
 const schema = Joi.object().keys({
-  name: Joi.string().min(1).max(100).required(),
+  name: Joi.string().min(1).max(500).required(),
   message: Joi.string().min(1).max(500).required(),
   latitude: Joi.number().min(-90).max(90).required(),
   longitude: Joi.number().min(-180).max(180).required(),
@@ -28,13 +28,11 @@ router.post("/", (req, res, next) => {
       message,
       latitude,
       longitude,
+      date: new Date(),
     };
-    //add current time
-    //insert into db
     messages.insert(userMessage).then((insertedMessage) => {
       res.json(insertedMessage);
     });
-    //res.json([]);
   } else {
     next(result.error);
   }
