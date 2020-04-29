@@ -6,3 +6,7 @@ app.listen(port, () => {
   console.log(`Listening: http://localhost:${port}`);
   /* eslint-enable no-console */
 });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(client / build));
+}
