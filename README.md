@@ -1,19 +1,45 @@
-<h1>Maps App</h1>
-<ul>
-<li>Detectează utilizatorii după locație (cere permisiunea în browser) </li>
-<li>Utilizatorii pot lăsa un mesaj în locația lor </li>
-<li>Mesajul e marcat cu un marker </li>
+# Express API Starter
 
-</ul>
+Includes API Server utilities:
 
-Libs:
-qAaQ1
+* [morgan](https://www.npmjs.com/package/morgan)
+  * HTTP request logger middleware for node.js
+* [helmet](https://www.npmjs.com/package/helmet)
+  * Helmet helps you secure your Express apps by setting various HTTP headers. It's not a silver bullet, but it can help!
+* [dotenv](https://www.npmjs.com/package/dotenv)
+  * Dotenv is a zero-dependency module that loads environment variables from a `.env` file into `process.env`
 
-<ul>
-<li>create-react-app </li>
-<li>generate map w/ Leaflet </li>
-<li>get user's location with the browser </li>
-<li>show pin at user location</li>
-<li>get location with user IP - json API (if user doesn't give permission in browser)</li>
+Development utilities:
 
-</ul>
+* [nodemon](https://www.npmjs.com/package/nodemon)
+  * nodemon is a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected.
+* [eslint](https://www.npmjs.com/package/eslint)
+  * ESLint is a tool for identifying and reporting on patterns found in ECMAScript/JavaScript code.
+* [mocha](https://www.npmjs.com/package/mocha)
+  * ☕️ Simple, flexible, fun JavaScript test framework for Node.js & The Browser ☕️
+* [supertest](https://www.npmjs.com/package/supertest)
+  * HTTP assertions made easy via superagent.
+
+## Setup
+
+```
+npm install
+```
+
+## Lint
+
+```
+npm run lint
+```
+
+## Test
+
+```
+npm run test
+```
+
+## Development
+
+```
+npm run dev
+```
