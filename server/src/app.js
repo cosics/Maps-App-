@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const morgan = require("morgan");
 const helmet = require("helmet");
@@ -16,11 +17,15 @@ app.use(helmet());
 app.use(express.json());
 app.use(cors());
 
-app.get("/", (req, res) => {
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "public", "index.html"));
+});
+
+/*app.get("*", (req, res) => {
   res.json({
     message: "🦄🌈✨👋🌎🌍🌏✨🌈🦄",
   });
-});
+}); */
 
 app.use("/api/v1", api);
 
